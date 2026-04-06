@@ -12,7 +12,7 @@ from langchain_openai import OpenAIEmbeddings, ChatOpenAI
 from langchain_community.vectorstores import FAISS
 from langchain_core.prompts import ChatPromptTemplate
 
-#configuration
+# Configuration
 
 load_dotenv()
 API_KEY = os.getenv("OPENROUTER_API_KEY")
@@ -43,94 +43,12 @@ Question: {question}
 Answer:"""
 )
 
-CUSTOM_CSS = """
-<style>
-    /* Dark theme overrides */
-    .stApp {
-        background-color: #0e1117;
-    }
 
-    /* Title styling */
-    .main-title {
-        text-align: center;
-        font-size: 2.5rem;
-        font-weight: 700;
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        padding: 0.5rem 0;
-    }
-
-    .subtitle {
-        text-align: center;
-        color: #8b95a5;
-        font-size: 1.05rem;
-        margin-bottom: 1rem;
-    }
-
-    /* Sidebar styling */
-    section[data-testid="stSidebar"] {
-        background-color: #161b22;
-        border-right: 1px solid #21262d;
-    }
-
-    section[data-testid="stSidebar"] .stMarkdown h2 {
-        color: #c9d1d9;
-    }
-
-    /* Answer card */
-    .answer-card {
-        background-color: #161b22;
-        border: 1px solid #30363d;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin-top: 1rem;
-    }
-
-    .answer-card h4 {
-        color: #58a6ff;
-        margin-bottom: 0.5rem;
-    }
-
-    .answer-card p {
-        color: #c9d1d9;
-        line-height: 1.7;
-    }
-
-    /* Button styling */
-    .stButton > button {
-        border-radius: 8px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-    }
-
-    .stButton > button:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    }
-
-    /* Status badge */
-    .status-badge {
-        display: inline-block;
-        background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
-        color: white;
-        padding: 0.3rem 0.8rem;
-        border-radius: 20px;
-        font-size: 0.85rem;
-        font-weight: 500;
-    }
-
-    /* Footer */
-    .footer {
-        text-align: center;
-        color: #484f58;
-        font-size: 0.8rem;
-        margin-top: 3rem;
-        padding-top: 1rem;
-        border-top: 1px solid #21262d;
-    }
-</style>
-"""
+def load_css():
+    """Load external CSS file."""
+    css_path = os.path.join(os.path.dirname(__file__), "style.css")
+    with open(css_path, encoding="utf-8") as f:
+        st.markdown(f"<style>{f.read()}</style>", unsafe_allow_html=True)
 
 
 # Core RAG Functions
@@ -182,14 +100,14 @@ def get_answer(query: str, vector_store) -> str:
 def main():
     st.set_page_config(
         page_title="YouTube Chatbot",
-        page_icon="🎥",
+        page_icon="🎬",
         layout="centered",
     )
 
-    st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+    load_css()
 
     # Title
-    st.markdown('<h1 class="main-title">🎥 YouTube Chatbot</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title">🎬 YouTube Chatbot</h1>', unsafe_allow_html=True)
     st.markdown(
         '<p class="subtitle">Ask questions about any YouTube video — powered by RAG</p>',
         unsafe_allow_html=True,
@@ -198,7 +116,7 @@ def main():
 
     # Sidebar
     with st.sidebar:
-        st.markdown("## ⚙️ Configuration")
+        st.markdown("## 🛠 Configuration")
         st.markdown("")
 
         video_id = st.text_input(
@@ -207,24 +125,24 @@ def main():
         )
 
         language_name = st.selectbox(
-            "🌐 Transcript Language",
+            "🌍 Transcript Language",
             options=list(LANGUAGES.keys()),
         )
         language_code = LANGUAGES[language_name]
 
         st.markdown("")
-        process_btn = st.button("🔄 Process Video", use_container_width=True)
+        process_btn = st.button("▶ Process Video", use_container_width=True)
 
         st.divider()
 
         if st.session_state.get("processed_video_id"):
             st.markdown(
-                f'<span class="status-badge">✅ Video loaded</span>',
+                f'<span class="status-badge">● Video loaded</span>',
                 unsafe_allow_html=True,
             )
             st.caption(f"ID: `{st.session_state.processed_video_id}`")
         else:
-            st.caption("ℹ️ Process a video first, then ask questions in the main panel.")
+            st.caption("💡 Process a video first, then ask questions in the main panel.")
 
     # Session State Initialization
     if "vector_store" not in st.session_state:
@@ -235,70 +153,70 @@ def main():
     # Process Video
     if process_btn:
         if not video_id.strip():
-            st.warning("⚠️ Please enter a valid YouTube Video ID.")
+            st.warning("Please enter a valid YouTube Video ID.")
         elif not API_KEY:
-            st.error("🔑 Missing OPENROUTER_API_KEY in your .env file.")
+            st.error("Missing `OPENROUTER_API_KEY` in your `.env` file.")
         else:
-            with st.spinner("📥 Fetching transcript & building vector store…"):
+            with st.spinner("Fetching transcript & building vector store…"):
                 try:
                     transcript = get_transcript(video_id.strip(), language_code)
                     vector_store = create_vectorstore(transcript)
                     st.session_state.vector_store = vector_store
                     st.session_state.processed_video_id = video_id.strip()
-                    st.success(f"✅ Video **{video_id.strip()}** processed in **{language_name}**!")
+                    st.success(f"Video **{video_id.strip()}** processed in **{language_name}**!")
                 except TranscriptsDisabled:
-                    st.error("❌ Transcripts are disabled for this video.")
+                    st.error("Transcripts are disabled for this video.")
                 except NoTranscriptFound:
                     st.error(
-                        f"❌ No **{language_name}** transcript found. Try a different language."
+                        f"No **{language_name}** transcript found. Try a different language."
                     )
                 except Exception as e:
-                    st.error(f"❌ Error: {e}")
+                    st.error(f"Something went wrong: {e}")
 
     # Status
     if st.session_state.vector_store is not None:
-        st.info(f"📌 Ready to answer questions about video: **{st.session_state.processed_video_id}**")
+        st.info(f"📌 Ready — video **{st.session_state.processed_video_id}** is loaded.")
     else:
-        st.info("👈 Enter a Video ID in the sidebar and click **Process Video** to get started.")
+        st.info("👈 Enter a Video ID in the sidebar and click **Process Video** to begin.")
 
     st.divider()
 
     # Question & Answer
-    st.subheader("💬 Ask a Question")
+    st.markdown('<p class="section-label">Your Question</p>', unsafe_allow_html=True)
 
     query = st.text_area(
         "Ask your question",
-        placeholder="What is the main topic of this video?",
+        placeholder="e.g. What are the key takeaways from this video?",
         label_visibility="collapsed",
-        height=100,
+        height=120,
     )
 
     answer_btn = st.button(
-        "🚀 Get Answer",
+        "✦ Get Answer",
         disabled=(st.session_state.vector_store is None),
         use_container_width=True,
     )
 
     if answer_btn:
         if not query.strip():
-            st.warning("⚠️ Please enter a question.")
+            st.warning("Please type a question first.")
         else:
-            with st.spinner("🤔 Thinking…"):
+            with st.spinner("Generating answer…"):
                 try:
                     answer = get_answer(query.strip(), st.session_state.vector_store)
                     st.markdown(
                         f'<div class="answer-card">'
-                        f"<h4>📝 Answer</h4>"
-                        f"<p>{answer}</p>"
+                        f'<div class="answer-header">✦ Answer</div>'
+                        f'<div class="answer-text">{answer}</div>'
                         f"</div>",
                         unsafe_allow_html=True,
                     )
                 except Exception as e:
-                    st.error(f"❌ Error generating answer: {e}")
+                    st.error(f"Error generating answer: {e}")
 
     # Footer
     st.markdown(
-        '<div class="footer">Built with Streamlit • LangChain • FAISS • OpenRouter</div>',
+        '<div class="footer">Built with Streamlit · LangChain · FAISS · OpenRouter</div>',
         unsafe_allow_html=True,
     )
 

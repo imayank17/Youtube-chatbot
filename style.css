@@ -1,0 +1,155 @@
+/* YouTube Chatbot — Dark Theme Styles */
+
+/* Dark theme base */
+.stApp {
+    background-color: #0e1117;
+}
+
+/* ── Title ── */
+.main-title {
+    text-align: center;
+    font-size: 2.6rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    padding: 0.5rem 0;
+    letter-spacing: -0.5px;
+}
+
+.subtitle {
+    text-align: center;
+    color: #8b95a5;
+    font-size: 1.05rem;
+    margin-bottom: 1rem;
+}
+
+/* ── Sidebar ── */
+section[data-testid="stSidebar"] {
+    background-color: #161b22;
+    border-right: 1px solid #21262d;
+}
+
+section[data-testid="stSidebar"] .stMarkdown h2 {
+    color: #c9d1d9;
+}
+
+/* ── Text Input Styling ── */
+.stTextInput > div > div > input {
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 10px !important;
+    color: #c9d1d9 !important;
+    padding: 0.65rem 0.85rem !important;
+    font-size: 0.95rem !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15) !important;
+}
+
+.stTextInput > div > div > input::placeholder {
+    color: #484f58 !important;
+}
+
+/* ── Text Area Styling ── */
+.stTextArea > div > div > textarea {
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 10px !important;
+    color: #c9d1d9 !important;
+    padding: 0.75rem 0.85rem !important;
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+    resize: vertical !important;
+}
+
+.stTextArea > div > div > textarea:focus {
+    border-color: #667eea !important;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.15) !important;
+}
+
+.stTextArea > div > div > textarea::placeholder {
+    color: #484f58 !important;
+}
+
+/* ── Selectbox Styling ── */
+.stSelectbox > div > div {
+    background-color: #161b22 !important;
+    border: 1px solid #30363d !important;
+    border-radius: 10px !important;
+    color: #c9d1d9 !important;
+}
+
+/* ── Answer Card ── */
+.answer-card {
+    background: linear-gradient(145deg, #161b22 0%, #1c2330 100%);
+    border: 1px solid #30363d;
+    border-left: 4px solid #667eea;
+    border-radius: 12px;
+    padding: 1.5rem 1.8rem;
+    margin-top: 1rem;
+}
+
+.answer-card .answer-header {
+    color: #58a6ff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.answer-card .answer-text {
+    color: #d1d5db;
+    line-height: 1.8;
+    font-size: 0.97rem;
+}
+
+/* ── Button Styling ── */
+.stButton > button {
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    padding: 0.55rem 1.2rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.stButton > button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 14px rgba(102, 126, 234, 0.35);
+}
+
+/* ── Status Badge ── */
+.status-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, #238636 0%, #2ea043 100%);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+/* ── Section Labels ── */
+.section-label {
+    color: #8b949e;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 1.2px;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* ── Footer ── */
+.footer {
+    text-align: center;
+    color: #484f58;
+    font-size: 0.8rem;
+    margin-top: 3rem;
+    padding-top: 1rem;
+    border-top: 1px solid #21262d;
+}
