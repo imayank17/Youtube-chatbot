@@ -1,5 +1,3 @@
-
-
 import os
 import streamlit as st
 from dotenv import load_dotenv
@@ -112,7 +110,7 @@ def main():
         '<p class="subtitle">Ask questions about any YouTube video — powered by RAG</p>',
         unsafe_allow_html=True,
     )
-    st.divider()
+
 
     # Sidebar
     with st.sidebar:
@@ -120,12 +118,12 @@ def main():
         st.markdown("")
 
         video_id = st.text_input(
-            "🔗 YouTube Video ID",
+            "YouTube Video ID",
             placeholder="e.g. Gfr50f6ZBvo",
         )
 
         language_name = st.selectbox(
-            "🌍 Transcript Language",
+            "Transcript Language",
             options=list(LANGUAGES.keys()),
         )
         language_code = LANGUAGES[language_name]
@@ -173,13 +171,8 @@ def main():
                 except Exception as e:
                     st.error(f"Something went wrong: {e}")
 
-    # Status
-    if st.session_state.vector_store is not None:
-        st.info(f"📌 Ready — video **{st.session_state.processed_video_id}** is loaded.")
-    else:
-        st.info("👈 Enter a Video ID in the sidebar and click **Process Video** to begin.")
 
-    st.divider()
+
 
     # Question & Answer
     st.markdown('<p class="section-label">Your Question</p>', unsafe_allow_html=True)
