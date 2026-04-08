@@ -15,6 +15,7 @@ from langchain_core.prompts import ChatPromptTemplate
 load_dotenv()
 API_KEY = os.getenv("OPENROUTER_API_KEY")
 BASE_URL = "https://openrouter.ai/api/v1"
+PROXY_URL = os.getenv("PROXY_URL")
 
 LANGUAGES = {
     "English": "en",
@@ -54,7 +55,10 @@ def load_css():
 
 def get_transcript(video_id: str, language: str = "en") -> str:
     """Fetch and concatenate the transcript of a YouTube video."""
-    ytt = YouTubeTranscriptApi()
+    if PROXY_URL:
+        ytt = YouTubeTranscriptApi(proxy_url=PROXY_URL)
+    else:
+        ytt = YouTubeTranscriptApi()
     fetched = ytt.fetch(video_id, languages=[language])
     transcript_data = fetched.to_raw_data()
     return " ".join(chunk["text"] for chunk in transcript_data)
@@ -97,7 +101,7 @@ def get_answer(query: str, vector_store) -> str:
 
 def main():
     st.set_page_config(
-        page_title="YouTube Chatbot",
+        page_title="AskYoutube AI",
         page_icon="🎬",
         layout="centered",
     )
@@ -105,7 +109,7 @@ def main():
     load_css()
 
     # Title
-    st.markdown('<h1 class="main-title">🎬 YouTube Chatbot</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-title">🎬 AskYoutube AI</h1>', unsafe_allow_html=True)
     st.markdown(
         '<p class="subtitle">Ask questions about any YouTube video — powered by RAG</p>',
         unsafe_allow_html=True,
